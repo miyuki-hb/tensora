@@ -1,0 +1,72 @@
+[workspace]
+resolver = "2"
+
+members = [
+    "crates/tensora-hash",
+    "crates/tensora-shared-types",
+    "crates/tensora-pointer",
+    "crates/tensora-utils",
+]
+
+exclude = [
+    "crates/*/target",
+    "crates/*/tests",
+    "crates/*/examples",
+    "crates/*/benches",
+    "crates/tensora-python" # Python bindings are not part of the workspace
+]
+
+[workspace.dependencies.tensora-hash]
+path = "crates/tensora-hash"
+
+[workspace.dependencies.tensora-shared-types]
+path = "crates/tensora-shared-types"
+
+[workspace.dependencies.tensora-pointer]
+path = "crates/tensora-pointer"
+
+[workspace.dependencies.tensora-utils]
+path = "crates/tensora-utils"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.92"
+authors = []
+license = "Apache-2.0"
+license-file = "LICENSE"
+repository = ""
+
+[workspace.dependencies]
+
+[workspace.lints.rust]
+unused = "warn"
+dead_code = "warn"
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+all      = { level = "warn",  priority = -1 }
+pedantic = { level = "warn",  priority = -1 }
+unwrap_used   = "deny"
+expect_used   = "deny"
+panic         = "deny"
+todo          = "warn"
+
+[profile.release]
+opt-level     = 3
+lto           = "thin"     
+codegen-units = 1
+strip         = "symbols"
+
+[profile.bench]
+inherits  = "release"
+debug     = 1              
+
+[profile.dev]
+opt-level = 0
+debug = true
+incremental = true
+
+[profile.dev.package."*"]
+opt-level = 1
+debug = false
